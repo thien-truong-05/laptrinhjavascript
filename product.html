@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <div id="notFound" class="hidden text-center py-20">
+        <div class="w-20 h-20 mx-auto bg-slate-100 rounded-full flex items-center justify-center text-3xl text-slate-400 mb-4"><i class="fa-solid fa-box-open"></i></div>
+        <h1 class="text-xl font-extrabold">Không tìm thấy sản phẩm</h1>
+        <p class="text-slate-500 text-sm mt-1">Sản phẩm có thể đã bị gỡ khỏi cửa hàng.</p>
+        <a href="products.html" class="btn-primary inline-block px-6 py-3 mt-5 text-sm">Xem tất cả sản phẩm</a>
+    </div>
+
+    <div id="detail" class="hidden fade-in">
+        <nav class="text-xs text-slate-400 mb-4"><a href="index.html" class="hover:text-orange-500">Trang chủ</a> / <a href="products.html" class="hover:text-orange-500">Sản phẩm</a> / <span id="crumb" class="text-slate-600"></span></nav>
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 grid md:grid-cols-2 gap-8">
+            <div class="space-y-3">
+                <div class="bg-slate-100 rounded-xl overflow-hidden aspect-square border border-slate-200/60"><img id="mainImage" src="" alt="" onerror="this.onerror=null;this.src=FALLBACK_IMG" class="object-cover w-full h-full"></div>
+                <div id="thumbs" class="flex gap-2 overflow-x-auto pb-1"></div>
+            </div>
+            <div class="flex flex-col">
+                <span id="pBrand" class="self-start text-xs font-bold uppercase tracking-widest text-orange-500 bg-orange-50 px-2.5 py-1 rounded-md border border-orange-200/50"></span>
+                <h1 id="pName" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 leading-snug"></h1>
+                <div class="flex items-center gap-2 mt-2"><span id="pStars" class="text-amber-400 text-sm"></span><span id="pRating" class="text-xs text-slate-500 font-medium"></span></div>
+                <div class="mt-4 flex items-baseline gap-3 flex-wrap"><span id="pPrice" class="text-3xl font-black text-orange-600"></span><span id="pOld" class="text-sm text-slate-400 line-through"></span><span id="pOff" class="hidden text-xs font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded"></span></div>
+                <p id="pDesc" class="text-slate-600 text-sm mt-4 leading-relaxed"></p>
+
+                <div class="mt-5"><label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Màu sắc</label><div id="colorOpts" class="flex gap-2 flex-wrap"></div></div>
+                <div class="mt-5">
+                    <div class="flex justify-between items-center mb-2"><label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Chọn size (EU)</label><button onclick="document.getElementById('sizeGuide').classList.toggle('hidden')" class="text-xs text-orange-600 hover:underline"><i class="fa-solid fa-ruler-horizontal mr-1"></i>Bảng size</button></div>
+                    <div id="sizeOpts" class="grid grid-cols-5 gap-2"></div>
+                    <p id="sizeErr" class="text-xs text-red-500 mt-1.5 hidden font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i>Vui lòng chọn size trước khi thêm!</p>
+                    <div id="sizeGuide" class="hidden mt-3 text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-x-auto">
+                        <table class="w-full text-center"><thead><tr class="text-slate-500"><th class="py-1">EU</th><th>38</th><th>39</th><th>40</th><th>41</th><th>42</th><th>43</th><th>44</th></tr></thead>
+                        <tbody class="font-semibold"><tr><td class="py-1 text-slate-500 text-left">Dài chân (cm)</td><td>24</td><td>24.5</td><td>25</td><td>25.5</td><td>26.5</td><td>27</td><td>27.5</td></tr></tbody></table>
+                        <p class="text-slate-400 mt-2">Đo chiều dài bàn chân và chọn size lớn hơn nếu bạn có bàn chân bè.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center gap-3 flex-wrap">
+                    <div class="flex items-center border border-slate-300 rounded-xl overflow-hidden bg-slate-50">
+                        <button onclick="adjustQty(-1)" class="px-3 py-2.5 text-slate-600 hover:bg-slate-200 font-bold">-</button>
+                        <span id="qty" class="px-3 py-2 text-sm font-bold min-w-[2.5rem] text-center">1</span>
+                        <button onclick="adjustQty(1)" class="px-3 py-2.5 text-slate-600 hover:bg-slate-200 font-bold">+</button>
+                    </div>
+                    <button onclick="addCurrent(false)" class="flex-1 btn-primary py-3 shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 min-w-[160px]"><i class="fa-solid fa-cart-plus"></i> Thêm Vào Giỏ</button>
+                    <button onclick="addCurrent(true)" class="btn-dark px-5 py-3 text-sm">Mua Ngay</button>
+                </div>
+                <ul class="mt-5 text-xs text-slate-500 space-y-1.5">
+                    <li><i class="fa-solid fa-certificate text-orange-500 w-5"></i>Cam kết chính hãng 100%</li>
+                    <li><i class="fa-solid fa-truck-fast text-orange-500 w-5"></i>Giao hàng toàn quốc 2-6 ngày làm việc</li>
+                    <li><i class="fa-solid fa-rotate-left text-orange-500 w-5"></i>Đổi trả trong 30 ngày nếu lỗi nhà sản xuất</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="mt-14">
+            <h2 class="text-xl font-extrabold text-slate-900 mb-5">Sản Phẩm Liên Quan</h2>
+            <div id="related" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </section>
+    </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    const p = getProduct(qs('id'));
+    let selSize = null, selColor = null, selQty = 1;
+
+    if (!p) { document.getElementById('notFound').classList.remove('hidden'); }
+    else {
+        document.title = p.name + ' - ProSneaker';
+        document.getElementById('detail').classList.remove('hidden');
+        document.getElementById('crumb').innerText = p.name;
+        document.getElementById('mainImage').src = p.image;
+        document.getElementById('mainImage').alt = p.name;
+        document.getElementById('pBrand').innerText = p.brand;
+        document.getElementById('pName').innerText = p.name;
+        document.getElementById('pStars').innerHTML = stars(p.rating);
+        document.getElementById('pRating').innerText = `(${p.rating} / 5)`;
+        document.getElementById('pPrice').innerText = formatVND(p.price);
+        document.getElementById('pDesc').innerText = p.description || 'Mô tả chi tiết đang cập nhật...';
+        if (p.oldPrice) document.getElementById('pOld').innerText = formatVND(p.oldPrice);
+        const d = discountPct(p);
+        if (d) { const o = document.getElementById('pOff'); o.innerText = `-${d}%`; o.classList.remove('hidden'); }
+
+        document.getElementById('thumbs').innerHTML = (p.thumbnails && p.thumbnails.length ? p.thumbnails : [p.image]).map(img =>
+            `<img src="${esc(img)}" onerror="this.onerror=null;this.src=FALLBACK_IMG" onclick="document.getElementById('mainImage').src=this.src" class="w-16 h-16 rounded-lg object-cover cursor-pointer border-2 border-transparent hover:border-orange-500 transition">`).join('');
+
+        const colors = p.colors && p.colors.length ? p.colors : ['Tiêu Chuẩn'];
+        selColor = colors[0];
+        document.getElementById('colorOpts').innerHTML = colors.map((c, i) =>
+            `<button data-i="${i}" onclick="pickColor(${i})" class="color-btn text-xs font-semibold px-3 py-1.5 rounded-lg border transition ${i === 0 ? 'border-orange-500 bg-orange-50 text-orange-600' : 'border-slate-300 text-slate-700 hover:border-orange-500'}">${esc(c)}</button>`).join('');
+        document.getElementById('sizeOpts').innerHTML = p.sizes.map(s =>
+            `<button data-s="${s}" onclick="pickSize(${s})" class="size-btn text-xs font-bold py-2 rounded-lg border border-slate-200 hover:border-orange-500 text-slate-800 transition">EU ${s}</button>`).join('');
+
+        const rel = products.filter(x => x.id !== p.id).sort((a, b) => (b.brand === p.brand) - (a.brand === p.brand)).slice(0, 4);
+        document.getElementById('related').innerHTML = rel.map(productCard).join('');
+    }
+
+    function pickColor(i) {
+        selColor = (p.colors && p.colors.length ? p.colors : ['Tiêu Chuẩn'])[i];
+        document.querySelectorAll('.color-btn').forEach(b => {
+            const on = Number(b.dataset.i) === i;
+            b.className = `color-btn text-xs font-semibold px-3 py-1.5 rounded-lg border transition ${on ? 'border-orange-500 bg-orange-50 text-orange-600' : 'border-slate-300 text-slate-700 hover:border-orange-500'}`;
+        });
+    }
+    function pickSize(s) {
+        selSize = s;
+        document.getElementById('sizeErr').classList.add('hidden');
+        document.querySelectorAll('.size-btn').forEach(b => {
+            const on = Number(b.dataset.s) === s;
+            b.classList.toggle('bg-orange-500', on); b.classList.toggle('text-white', on); b.classList.toggle('border-orange-500', on);
+        });
+    }
+    function adjustQty(d) { selQty = Math.max(1, Math.min(20, selQty + d)); document.getElementById('qty').innerText = selQty; }
+    function addCurrent(buyNow) {
+        if (!selSize) { document.getElementById('sizeErr').classList.remove('hidden'); return; }
+        addToCart(p, selSize, selColor, selQty);
+        if (buyNow) location.href = 'cart.html';
+        else showToast(`Đã thêm ${p.name} (Size ${selSize}) vào giỏ!`);
+    }
+</script>
+</body>
+</html>

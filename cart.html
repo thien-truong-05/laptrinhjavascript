@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <nav class="text-xs text-slate-400 mb-4"><a href="index.html" class="hover:text-orange-500">Trang chủ</a> / <span class="text-slate-600">Giỏ hàng</span></nav>
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-6"><i class="fa-solid fa-bag-shopping text-orange-500 mr-2"></i>Giỏ Hàng Của Bạn</h1>
+
+    <div id="emptyCart" class="hidden bg-white rounded-2xl border border-dashed border-slate-300 py-16 text-center">
+        <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-3xl mx-auto mb-3"><i class="fa-solid fa-cart-flatbed"></i></div>
+        <p class="font-bold text-slate-700">Giỏ hàng đang trống</p>
+        <p class="text-slate-400 text-xs mt-1">Chưa có sản phẩm nào được chọn. Hãy chọn vài sản phẩm ưng ý nhé!</p>
+        <a href="products.html" class="btn-primary inline-block px-6 py-3 mt-5 text-sm">Tiếp tục mua sắm</a>
+    </div>
+
+    <div id="cartContent" class="hidden grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-3" id="cartItems"></div>
+        <aside class="bg-white rounded-2xl border border-slate-200 p-5 h-fit space-y-4 lg:sticky lg:top-24">
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Mã giảm giá</label>
+                <div class="flex gap-2">
+                    <input type="text" id="voucherInput" placeholder="DISCOUNT10 / SPORT20" class="field !rounded-lg !py-2 uppercase">
+                    <button onclick="applyVoucher()" class="btn-dark px-4 text-xs">Áp dụng</button>
+                </div>
+                <p id="voucherMsg" class="text-xs mt-1.5 hidden font-medium"></p>
+            </div>
+            <div class="space-y-2 text-sm pt-3 border-t border-slate-100">
+                <div class="flex justify-between text-slate-500"><span>Tạm tính</span><span id="sub" class="font-semibold text-slate-800"></span></div>
+                <div id="discRow" class="flex justify-between text-emerald-600 hidden"><span>Giảm giá <span id="discTag"></span> <button onclick="removeVoucher()" class="text-xs text-slate-400 hover:text-red-500 underline">bỏ</button></span><span id="disc" class="font-bold"></span></div>
+                <div class="flex justify-between text-slate-500"><span>Phí vận chuyển</span><span class="text-xs">Tính ở bước thanh toán</span></div>
+                <div class="flex justify-between text-base font-extrabold text-slate-900 pt-3 border-t border-slate-100"><span>Tạm tính sau giảm</span><span id="total" class="text-orange-600 text-lg"></span></div>
+            </div>
+            <div id="loginNotice" class="hidden bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-3 text-xs space-y-2">
+                <p class="font-bold"><i class="fa-solid fa-circle-info mr-1"></i>Bạn cần đăng nhập hoặc đăng ký tài khoản để đặt hàng.</p>
+                <p>Giỏ hàng của bạn sẽ được giữ nguyên sau khi đăng nhập.</p>
+                <div class="flex gap-2"><a href="login.html?redirect=checkout.html&need=order" class="flex-1 text-center btn-dark py-2">Đăng nhập</a><a href="register.html?redirect=checkout.html&need=order" class="flex-1 text-center btn-primary py-2">Đăng ký</a></div>
+            </div>
+            <a id="checkoutBtn" href="checkout.html" class="btn-primary w-full py-3.5 shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 text-sm">Tiến Hành Đặt Hàng <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="products.html" class="block text-center text-xs text-slate-500 hover:text-orange-600">← Tiếp tục mua sắm</a>
+        </aside>
+    </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    function renderCart() {
+        const has = cart.length > 0;
+        document.getElementById('emptyCart').classList.toggle('hidden', has);
+        document.getElementById('cartContent').classList.toggle('hidden', !has);
+        updateCartBadge();
+        if (!has) return;
+        document.getElementById('cartItems').innerHTML = cart.map((it, i) => `
+            <div class="flex items-center gap-4 bg-white p-3 sm:p-4 rounded-2xl border border-slate-200">
+                <a href="product.html?id=${it.id}"><img src="${esc(it.image)}" alt="${esc(it.name)}" onerror="this.onerror=null;this.src=FALLBACK_IMG" class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover bg-slate-100"></a>
+                <div class="flex-1 min-w-0">
+                    <a href="product.html?id=${it.id}" class="text-sm font-bold text-slate-800 hover:text-orange-600 block truncate">${esc(it.name)}</a>
+                    <p class="text-xs text-slate-500 mt-0.5">Size: <b>${esc(it.size)}</b> · Màu: ${esc(it.color)}</p>
+                    <p class="text-sm font-black text-orange-600 mt-1">${formatVND(it.price)}</p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <button onclick="removeItem(${i})" class="text-slate-400 hover:text-red-500 text-sm p-1" title="Xóa"><i class="fa-regular fa-trash-can"></i></button>
+                    <div class="flex items-center border border-slate-300 rounded-lg overflow-hidden bg-white">
+                        <button onclick="changeQty(${i},-1)" class="px-2.5 py-1 text-slate-600 hover:bg-slate-100 font-bold">-</button>
+                        <span class="px-2 text-sm font-bold">${it.qty}</span>
+                        <button onclick="changeQty(${i},1)" class="px-2.5 py-1 text-slate-600 hover:bg-slate-100 font-bold">+</button>
+                    </div>
+                    <p class="text-xs text-slate-500">= <b class="text-slate-800">${formatVND(it.price * it.qty)}</b></p>
+                </div>
+            </div>`).join('');
+        const sub = cartSubtotal(), disc = cartDiscount();
+        document.getElementById('sub').innerText = formatVND(sub);
+        document.getElementById('discRow').classList.toggle('hidden', !disc);
+        document.getElementById('discTag').innerText = discountCode ? `(${discountCode})` : '';
+        document.getElementById('disc').innerText = '-' + formatVND(disc);
+        document.getElementById('total').innerText = formatVND(sub - disc);
+    }
+    function changeQty(i, d) { cart[i].qty += d; if (cart[i].qty <= 0) cart.splice(i, 1); saveState(); renderCart(); }
+    function removeItem(i) { cart.splice(i, 1); saveState(); renderCart(); }
+    function applyVoucher() {
+        const code = document.getElementById('voucherInput').value.trim().toUpperCase();
+        const msg = document.getElementById('voucherMsg'); msg.classList.remove('hidden');
+        if (COUPONS[code]) { discountCode = code; saveState(); msg.innerText = `Đã áp dụng mã giảm ${COUPONS[code]}%!`; msg.className = 'text-xs mt-1.5 font-medium text-emerald-600'; }
+        else { msg.innerText = 'Mã giảm giá không hợp lệ!'; msg.className = 'text-xs mt-1.5 font-medium text-red-500'; }
+        renderCart();
+    }
+    function removeVoucher() { discountCode = null; saveState(); document.getElementById('voucherMsg').classList.add('hidden'); document.getElementById('voucherInput').value = ''; renderCart(); }
+    if (discountCode) document.getElementById('voucherInput').value = discountCode;
+    if (!currentUser) {
+        document.getElementById('loginNotice').classList.remove('hidden');
+        const btn = document.getElementById('checkoutBtn');
+        btn.href = 'login.html?redirect=checkout.html&need=order';
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Đăng nhập để đặt hàng';
+    }
+    renderCart();
+</script>
+</body>
+</html>

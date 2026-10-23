@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProSneaker - Giày Thể Thao Chính Hãng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow">
+    <!-- Hero -->
+    <section class="relative bg-slate-900 text-white overflow-hidden py-12 md:py-20 border-b border-slate-800">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-600/20 via-slate-900/50 to-slate-900 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-xl text-center md:text-left">
+                <span class="inline-block px-3 py-1 bg-orange-500/10 text-orange-400 text-xs font-semibold rounded-full border border-orange-500/20 uppercase tracking-widest mb-4">Bộ Sưu Tập Mới 2026</span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4">Bứt Phá Giới Hạn <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">Trên Từng Bước Chân</span></h1>
+                <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">Khám phá giày thể thao cao cấp chính hãng từ Nike, Adidas, Puma, Jordan với công nghệ đệm nâng đỡ vượt trội và kiểu dáng thời thượng.</p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <a href="products.html" class="btn-primary px-6 py-3 shadow-lg shadow-orange-500/25 hover:-translate-y-0.5 flex items-center gap-2">Mua Sắm Ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="about.html" class="px-6 py-3 rounded-xl font-bold border border-slate-600 hover:bg-slate-800 transition">Về Chúng Tôi</a>
+                </div>
+            </div>
+            <div id="heroStage" class="hero-stage relative w-full max-w-md hero-reveal">
+                <div class="hero-float relative">
+                    <div class="hero-glow absolute -inset-2 bg-gradient-to-r from-orange-500 to-amber-500 rounded-3xl"></div>
+                    <div id="heroTilt" class="hero-tilt relative">
+                        <div class="hero-card shadow-2xl border border-slate-700 h-72 sm:h-80">
+                            <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80" alt="Giày thể thao" onerror="this.onerror=null;this.src=FALLBACK_IMG" class="object-cover w-full h-full">
+                            <span class="hero-shine"></span>
+                            <span class="hero-glare" id="heroGlare"></span>
+                        </div>
+                        <div class="hero-chip absolute -top-4 -left-3 sm:-left-6 bg-white text-slate-900 text-xs font-extrabold px-3 py-2 rounded-xl shadow-xl flex items-center gap-2"><i class="fa-solid fa-fire text-orange-500"></i> Giảm đến 20%</div>
+                        <div class="hero-chip hero-chip-2 absolute -bottom-4 -right-3 sm:-right-5 bg-slate-900/95 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2"><i class="fa-solid fa-certificate text-amber-400"></i> 100% Chính hãng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-lg"><i class="fa-solid fa-certificate"></i></div><div><p class="font-bold text-sm">100% Chính hãng</p><p class="text-xs text-slate-500">Cam kết hoàn tiền</p></div></div>
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-lg"><i class="fa-solid fa-truck-fast"></i></div><div><p class="font-bold text-sm">Giao hàng nhanh</p><p class="text-xs text-slate-500">2-3 ngày toàn quốc</p></div></div>
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg"><i class="fa-solid fa-rotate-left"></i></div><div><p class="font-bold text-sm">Đổi trả 30 ngày</p><p class="text-xs text-slate-500">Miễn phí đổi size</p></div></div>
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-lg"><i class="fa-solid fa-headset"></i></div><div><p class="font-bold text-sm">Hỗ trợ 24/7</p><p class="text-xs text-slate-500">Hotline 0905 123 456</p></div></div>
+        </div>
+    </section>
+
+    <!-- Brands -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-5">Mua Theo Thương Hiệu</h2>
+        <div id="brandGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    </section>
+
+    <!-- Hot deals -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div class="flex items-end justify-between mb-5">
+            <div><h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Ưu Đãi Hot <i class="fa-solid fa-fire text-orange-500"></i></h2><p class="text-sm text-slate-500">Các mẫu giảm giá sâu nhất hiện tại</p></div>
+            <a href="products.html?sort=discount" class="text-sm font-bold text-orange-600 hover:underline">Xem tất cả <i class="fa-solid fa-arrow-right text-xs"></i></a>
+        </div>
+        <div id="dealGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <!-- New arrivals -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div class="flex items-end justify-between mb-5">
+            <div><h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Hàng Mới Về</h2><p class="text-sm text-slate-500">Sản phẩm vừa được thêm vào cửa hàng</p></div>
+            <a href="products.html" class="text-sm font-bold text-orange-600 hover:underline">Xem tất cả <i class="fa-solid fa-arrow-right text-xs"></i></a>
+        </div>
+        <div id="newGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <!-- Voucher banner -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div class="rounded-3xl bg-gradient-to-r from-orange-500 to-amber-500 text-white p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg shadow-orange-500/20">
+            <div><p class="text-xs font-bold uppercase tracking-widest opacity-90">Mã giảm giá</p><h3 class="text-2xl sm:text-3xl font-extrabold mt-1">Nhập <span class="bg-white/20 px-2 rounded">SPORT20</span> giảm 20%</h3><p class="text-sm opacity-90 mt-1">Hoặc <b>DISCOUNT10</b> giảm 10%. Áp dụng tại trang giỏ hàng.</p></div>
+            <a href="products.html" class="bg-white text-orange-600 font-bold px-6 py-3 rounded-xl hover:bg-orange-50 transition whitespace-nowrap">Mua ngay</a>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-5 text-center">Khách Hàng Nói Gì</h2>
+        <div class="grid md:grid-cols-3 gap-5">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200"><div class="text-amber-400 text-xs mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="text-sm text-slate-600">“Giày đúng chính hãng, đóng gói cẩn thận, giao nhanh hơn dự kiến. Chạy 10km rất êm chân.”</p><p class="text-xs font-bold mt-3">Minh Tuấn <span class="font-normal text-slate-400">· Đà Nẵng</span></p></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200"><div class="text-amber-400 text-xs mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="text-sm text-slate-600">“Nhân viên tư vấn size rất nhiệt tình, đổi size lần đầu không mất phí. Sẽ ủng hộ tiếp.”</p><p class="text-xs font-bold mt-3">Thu Hà <span class="font-normal text-slate-400">· TP. Hồ Chí Minh</span></p></div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200"><div class="text-amber-400 text-xs mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div><p class="text-sm text-slate-600">“Giá tốt hơn nhiều chỗ khác, có mã giảm giá nữa. Website dễ dùng, đặt hàng chỉ vài phút.”</p><p class="text-xs font-bold mt-3">Quốc Bảo <span class="font-normal text-slate-400">· Hà Nội</span></p></div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="max-w-3xl mx-auto px-4 mt-14 text-center">
+        <h3 class="text-xl font-extrabold">Nhận tin khuyến mãi mới nhất</h3>
+        <p class="text-sm text-slate-500 mt-1">Đăng ký email để không bỏ lỡ bộ sưu tập và ưu đãi độc quyền.</p>
+        <form id="newsForm" class="mt-4 flex flex-col sm:flex-row gap-2">
+            <input type="email" id="newsEmail" required placeholder="email@example.com" class="field flex-1">
+            <button class="btn-dark px-6 py-2.5 text-sm">Đăng ký</button>
+        </form>
+    </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    const brands = [...new Set(products.map(p => p.brand))];
+    const icons = { Nike: 'fa-check', Adidas: 'fa-bars-staggered', Puma: 'fa-paw', Jordan: 'fa-basketball' };
+    document.getElementById('brandGrid').innerHTML = brands.slice(0, 8).map(b => `
+        <a href="products.html?brand=${encodeURIComponent(b)}" class="group bg-white rounded-2xl border border-slate-200 p-6 text-center hover:border-orange-400 hover:shadow-lg transition">
+            <div class="w-14 h-14 mx-auto rounded-full bg-slate-900 text-orange-400 flex items-center justify-center text-xl group-hover:scale-110 transition"><i class="fa-solid ${icons[b] || 'fa-shoe-prints'}"></i></div>
+            <p class="font-extrabold mt-3">${esc(b)}</p>
+            <p class="text-xs text-slate-400">${products.filter(p => p.brand === b).length} sản phẩm</p>
+        </a>`).join('');
+    const deals = [...products].sort((a, b) => discountPct(b) - discountPct(a)).slice(0, 4);
+    document.getElementById('dealGrid').innerHTML = deals.map(productCard).join('');
+    document.getElementById('newGrid').innerHTML = [...products].sort((a, b) => b.id - a.id).slice(0, 4).map(productCard).join('');
+    // Hero image: 3D tilt + glare following the cursor
+    (function () {
+        const stage = document.getElementById('heroStage'), tilt = document.getElementById('heroTilt'), glare = document.getElementById('heroGlare');
+        if (!stage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        stage.addEventListener('mousemove', e => {
+            const r = stage.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+            tilt.style.transform = `rotateY(${(x - .5) * 18}deg) rotateX(${(.5 - y) * 14}deg) scale(1.03)`;
+            glare.style.setProperty('--gx', x * 100 + '%'); glare.style.setProperty('--gy', y * 100 + '%');
+        });
+        stage.addEventListener('mouseleave', () => { tilt.style.transform = ''; });
+    })();
+    document.getElementById('newsForm').onsubmit = e => { e.preventDefault(); e.target.reset(); showToast('Đăng ký nhận tin thành công!'); };
+</script>
+</body>
+</html>

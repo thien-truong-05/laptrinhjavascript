@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .chip { border: 1px solid #cbd5e1; background: #fff; border-radius: 9999px; padding: .4rem .85rem; font-size: .75rem; font-weight: 600; color: #475569; transition: .15s; cursor: pointer; }
+        .chip:hover { border-color: #f97316; color: #ea580c; }
+        .chip.active { background: #f97316; border-color: #f97316; color: #fff; }
+        .field.invalid { border-color: #f87171; box-shadow: 0 0 0 1px #f87171; }
+        .field.valid { border-color: #34d399; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .faq-ico { transform: rotate(180deg); }
+        .faq-ico { transition: transform .2s; }
+        @keyframes pop { 0% { transform: scale(.6); opacity: 0 } 70% { transform: scale(1.1) } 100% { transform: scale(1); opacity: 1 } }
+        .pop { animation: pop .4s ease-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+<main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <nav class="text-xs text-slate-400 mb-4"><a href="index.html" class="hover:text-orange-500">Trang chủ</a> / <span class="text-slate-600">Liên hệ</span></nav>
+    <div class="flex flex-wrap items-end justify-between gap-3 mb-8">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold mb-1">Liên Hệ Với Chúng Tôi</h1>
+            <p class="text-slate-500 text-sm">Bạn cần tư vấn size, theo dõi đơn hàng hay hợp tác? Hãy để lại lời nhắn.</p>
+        </div>
+        <span id="openStatus" class="text-xs font-bold px-3 py-1.5 rounded-full border"></span>
+    </div>
+
+    <div class="grid md:grid-cols-5 gap-6">
+        <!-- Info -->
+        <div class="md:col-span-2 space-y-4">
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 flex gap-4">
+                <div class="w-11 h-11 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="min-w-0"><p class="font-bold text-sm">Cửa hàng</p><p class="text-xs text-slate-500">123 Nguyễn Văn Linh, Quận Hải Châu, Đà Nẵng</p>
+                    <button type="button" onclick="toggleMap()" id="mapBtn" class="text-xs font-bold text-orange-600 hover:underline mt-1.5"><i class="fa-solid fa-map mr-1"></i>Xem bản đồ</button></div>
+            </div>
+            <div id="mapBox" class="hidden rounded-2xl overflow-hidden border border-slate-200 bg-white fade-in">
+                <iframe id="mapFrame" title="Bản đồ cửa hàng" class="w-full h-56" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=123+Nguy%E1%BB%85n+V%C4%83n+Linh,+H%E1%BA%A3i+Ch%C3%A2u,+%C4%90%C3%A0+N%E1%BA%B5ng" target="_blank" rel="noopener" class="block text-center text-xs font-bold text-orange-600 hover:bg-orange-50 py-2.5"><i class="fa-solid fa-route mr-1"></i>Chỉ đường</a>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 flex gap-4">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-phone"></i></div>
+                <div class="flex-1 min-w-0"><p class="font-bold text-sm">Hotline</p><p class="text-xs text-slate-500">0905 123 456 (8:00 - 21:00 hằng ngày)</p>
+                    <div class="mt-1.5 space-x-3 text-xs font-bold"><a href="tel:0905123456" class="text-orange-600 hover:underline"><i class="fa-solid fa-phone-volume mr-1"></i>Gọi ngay</a><button type="button" data-copy="0905 123 456" class="text-slate-500 hover:text-orange-600"><i class="fa-regular fa-copy mr-1"></i>Sao chép</button></div></div>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 flex gap-4">
+                <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                <div class="flex-1 min-w-0"><p class="font-bold text-sm">Email</p><p class="text-xs text-slate-500">support@prosneaker.vn</p>
+                    <div class="mt-1.5 space-x-3 text-xs font-bold"><a href="mailto:support@prosneaker.vn" class="text-orange-600 hover:underline"><i class="fa-solid fa-paper-plane mr-1"></i>Gửi email</a><button type="button" data-copy="support@prosneaker.vn" class="text-slate-500 hover:text-orange-600"><i class="fa-regular fa-copy mr-1"></i>Sao chép</button></div></div>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-5">
+                <p class="font-bold text-sm mb-2"><i class="fa-regular fa-clock text-orange-500 mr-1"></i>Giờ mở cửa</p>
+                <ul id="hoursList" class="text-xs space-y-1"></ul>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="md:col-span-3 space-y-4">
+            <form id="contactForm" class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4" novalidate>
+                <div class="flex items-center justify-between">
+                    <h2 class="font-extrabold">Gửi lời nhắn</h2>
+                    <span id="draftTag" class="hidden text-[11px] text-slate-400"><i class="fa-solid fa-floppy-disk mr-1"></i>Đã lưu nháp</span>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div><label for="cName" class="block text-xs font-bold uppercase text-slate-700 mb-1">Họ tên *</label><input id="cName" class="field" autocomplete="name"><p class="err hidden text-[11px] text-red-500 mt-1" data-for="cName">Vui lòng nhập họ tên (tối thiểu 2 ký tự)</p></div>
+                    <div><label for="cEmail" class="block text-xs font-bold uppercase text-slate-700 mb-1">Email *</label><input id="cEmail" type="email" class="field" autocomplete="email"><p class="err hidden text-[11px] text-red-500 mt-1" data-for="cEmail">Email không hợp lệ</p></div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Chủ đề</label>
+                    <div id="subjectChips" class="flex flex-wrap gap-2"></div>
+                    <select id="cSubject" class="hidden"></select>
+                </div>
+                <div id="orderWrap" class="hidden fade-in">
+                    <label for="cOrder" class="block text-xs font-bold uppercase text-slate-700 mb-1">Mã đơn hàng</label>
+                    <input id="cOrder" class="field" placeholder="VD: #PS-10293" list="orderList">
+                    <datalist id="orderList"></datalist>
+                </div>
+                <div>
+                    <label for="cMsg" class="block text-xs font-bold uppercase text-slate-700 mb-1">Nội dung *</label>
+                    <textarea id="cMsg" rows="5" maxlength="500" class="field" placeholder="Nhập nội dung cần hỗ trợ..."></textarea>
+                    <div class="flex justify-between mt-1"><p class="err hidden text-[11px] text-red-500" data-for="cMsg">Nội dung tối thiểu 10 ký tự</p><span id="cCount" class="text-[11px] text-slate-400 ml-auto">0/500</span></div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button id="sendBtn" class="btn-primary px-8 py-3 text-sm shadow-md"><i class="fa-solid fa-paper-plane mr-1"></i> Gửi liên hệ</button>
+                    <button type="button" id="clearBtn" class="text-xs font-bold text-slate-500 hover:text-red-500">Xóa nội dung</button>
+                </div>
+            </form>
+
+            <div id="sentBox" class="hidden bg-white rounded-2xl border border-emerald-200 p-6 text-center pop">
+                <div class="w-14 h-14 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-3"><i class="fa-solid fa-check"></i></div>
+                <p class="font-extrabold">Đã gửi liên hệ!</p>
+                <p class="text-xs text-slate-500 mt-1">Chúng tôi sẽ phản hồi qua email <b id="sentEmail"></b> trong vòng 24 giờ.</p>
+                <button type="button" onclick="newMessage()" class="btn-dark px-5 py-2.5 text-xs mt-4">Gửi tin nhắn khác</button>
+            </div>
+
+            <div id="historyBox" class="hidden bg-white rounded-2xl border border-slate-200 p-5">
+                <h3 class="font-extrabold text-sm mb-3"><i class="fa-solid fa-clock-rotate-left text-orange-500 mr-1.5"></i>Liên hệ bạn đã gửi</h3>
+                <div id="historyList" class="space-y-2"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-5">
+                <h3 class="font-extrabold text-sm mb-2"><i class="fa-solid fa-circle-question text-orange-500 mr-1.5"></i>Câu hỏi thường gặp</h3>
+                <div class="divide-y divide-slate-100 text-sm">
+                    <details class="py-3"><summary class="font-semibold cursor-pointer flex justify-between items-center">Làm sao chọn đúng size?<i class="fa-solid fa-chevron-down faq-ico text-xs text-slate-400"></i></summary><p class="text-slate-600 mt-2 text-xs">Xem bảng size ở trang chi tiết sản phẩm. Nếu bàn chân bè, nên chọn lớn hơn 0.5 size.</p></details>
+                    <details class="py-3"><summary class="font-semibold cursor-pointer flex justify-between items-center">Bao lâu tôi nhận được hàng?<i class="fa-solid fa-chevron-down faq-ico text-xs text-slate-400"></i></summary><p class="text-slate-600 mt-2 text-xs">Giao nhanh 2-3 ngày, tiết kiệm 4-6 ngày làm việc.</p></details>
+                    <details class="py-3"><summary class="font-semibold cursor-pointer flex justify-between items-center">Đổi trả như thế nào?<i class="fa-solid fa-chevron-down faq-ico text-xs text-slate-400"></i></summary><p class="text-slate-600 mt-2 text-xs">Đổi size miễn phí 1 lần trong 30 ngày. Chi tiết tại <a href="policy.html#return" class="text-orange-600 font-semibold hover:underline">chính sách đổi trả</a>.</p></details>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    const SUBJECTS = ['Tư vấn sản phẩm / size', 'Theo dõi đơn hàng', 'Đổi trả & bảo hành', 'Hợp tác', 'Khác'];
+    const DRAFT_KEY = 'pro_contact_draft';
+    const $ = id => document.getElementById(id);
+    const val = id => $(id).value.trim();
+    let subject = SUBJECTS[0];
+
+    /* ---- Subject chips ---- */
+    function setSubject(s) {
+        subject = s; $('cSubject').value = s;
+        document.querySelectorAll('#subjectChips .chip').forEach(c => c.classList.toggle('active', c.dataset.s === s));
+        $('orderWrap').classList.toggle('hidden', !['Theo dõi đơn hàng', 'Đổi trả & bảo hành'].includes(s));
+        saveDraft();
+    }
+    $('cSubject').innerHTML = SUBJECTS.map(s => `<option>${esc(s)}</option>`).join('');
+    $('subjectChips').innerHTML = SUBJECTS.map(s => `<button type="button" class="chip" data-s="${esc(s)}">${esc(s)}</button>`).join('');
+    $('subjectChips').onclick = e => { const c = e.target.closest('.chip'); if (c) setSubject(c.dataset.s); };
+
+    /* ---- Prefill: account + order list ---- */
+    if (currentUser) {
+        $('cName').value = currentUser.name; $('cEmail').value = currentUser.email;
+        $('orderList').innerHTML = orders.filter(o => o.userEmail === currentUser.email).map(o => `<option value="${esc(o.id)}">`).join('');
+    }
+
+    /* ---- Validation (live) ---- */
+    const rules = {
+        cName: () => val('cName').length >= 2,
+        cEmail: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('cEmail')),
+        cMsg: () => val('cMsg').length >= 10
+    };
+    function check(id, showValid) {
+        const ok = rules[id]();
+        document.querySelector(`.err[data-for="${id}"]`).classList.toggle('hidden', ok);
+        $(id).classList.toggle('invalid', !ok);
+        $(id).classList.toggle('valid', ok && !!showValid);
+        return ok;
+    }
+    Object.keys(rules).forEach(id => {
+        $(id).addEventListener('blur', () => check(id, true));
+        $(id).addEventListener('input', () => { if ($(id).classList.contains('invalid')) check(id, true); });
+    });
+
+    /* ---- Counter + draft autosave ---- */
+    let draftTimer;
+    function updateCount() { const n = $('cMsg').value.length; $('cCount').innerText = n + '/500'; $('cCount').classList.toggle('text-orange-500', n > 450); }
+    function saveDraft() {
+        clearTimeout(draftTimer);
+        draftTimer = setTimeout(() => {
+            const d = { name: val('cName'), email: val('cEmail'), subject, order: val('cOrder'), msg: $('cMsg').value };
+            if (!d.msg) { save(DRAFT_KEY, null); $('draftTag').classList.add('hidden'); return; }
+            save(DRAFT_KEY, d); $('draftTag').classList.remove('hidden');
+        }, 400);
+    }
+    ['cName', 'cEmail', 'cOrder', 'cMsg'].forEach(id => $(id).addEventListener('input', () => { updateCount(); saveDraft(); }));
+    const draft = load(DRAFT_KEY, null);
+    if (draft && draft.msg) {
+        if (!currentUser) { $('cName').value = draft.name || ''; $('cEmail').value = draft.email || ''; }
+        $('cOrder').value = draft.order || ''; $('cMsg').value = draft.msg; subject = draft.subject || subject;
+        $('draftTag').classList.remove('hidden');
+    }
+    const qsSubject = qs('subject');
+    if (qsSubject && SUBJECTS.includes(qsSubject)) subject = qsSubject;
+    setSubject(subject); updateCount();
+
+    $('clearBtn').onclick = () => {
+        if ($('cMsg').value && !confirm('Xóa toàn bộ nội dung đang nhập?')) return;
+        $('cMsg').value = ''; $('cOrder').value = ''; updateCount(); saveDraft();
+        ['cName', 'cEmail', 'cMsg'].forEach(id => { $(id).classList.remove('invalid', 'valid'); document.querySelector(`.err[data-for="${id}"]`).classList.add('hidden'); });
+    };
+
+    /* ---- Submit ---- */
+    $('contactForm').onsubmit = e => {
+        e.preventDefault();
+        let ok = true;
+        Object.keys(rules).forEach(id => { if (!check(id, true)) ok = false; });
+        if (!ok) { showToast('Vui lòng kiểm tra lại thông tin!', 'err'); const bad = document.querySelector('.field.invalid'); if (bad) bad.focus(); return; }
+        const btn = $('sendBtn'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang gửi...';
+        setTimeout(() => {
+            const order = val('cOrder');
+            messages.unshift({ id: Date.now(), name: val('cName'), email: val('cEmail'), subject, message: (order ? `[Đơn ${order}] ` : '') + val('cMsg'), date: new Date().toLocaleString('vi-VN'), read: false });
+            saveState(); save(DRAFT_KEY, null);
+            $('sentEmail').innerText = val('cEmail');
+            $('contactForm').classList.add('hidden'); $('sentBox').classList.remove('hidden'); $('sentBox').classList.add('pop');
+            btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-1"></i> Gửi liên hệ';
+            renderHistory(); showToast('Đã gửi liên hệ! Chúng tôi sẽ phản hồi sớm.');
+        }, 700);
+    };
+    function newMessage() {
+        $('cMsg').value = ''; $('cOrder').value = ''; updateCount(); $('draftTag').classList.add('hidden');
+        ['cName', 'cEmail', 'cMsg'].forEach(id => $(id).classList.remove('valid', 'invalid'));
+        $('sentBox').classList.add('hidden'); $('contactForm').classList.remove('hidden'); $('cMsg').focus();
+    }
+
+    /* ---- History of messages sent from this browser ---- */
+    function renderHistory() {
+        const email = currentUser ? currentUser.email.toLowerCase() : val('cEmail').toLowerCase();
+        const mine = email ? messages.filter(m => (m.email || '').toLowerCase() === email).slice(0, 3) : [];
+        $('historyBox').classList.toggle('hidden', !mine.length);
+        $('historyList').innerHTML = mine.map(m => `<div class="border border-slate-200 rounded-xl p-3"><div class="flex justify-between gap-2 text-xs"><span class="font-bold text-orange-600">${esc(m.subject)}</span><span class="text-slate-400">${esc(m.date)}</span></div><p class="text-xs text-slate-600 mt-1 line-clamp-1">${esc(m.message)}</p></div>`).join('');
+    }
+    $('cEmail').addEventListener('change', renderHistory);
+    renderHistory();
+
+    /* ---- Copy buttons ---- */
+    document.querySelectorAll('[data-copy]').forEach(b => b.onclick = async () => {
+        const t = b.dataset.copy;
+        try { await navigator.clipboard.writeText(t); }
+        catch (e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove(); }
+        showToast('Đã sao chép: ' + t);
+    });
+
+    /* ---- Map toggle ---- */
+    function toggleMap() {
+        const box = $('mapBox'), open = box.classList.toggle('hidden') === false;
+        if (open && !$('mapFrame').src) $('mapFrame').src = 'https://maps.google.com/maps?q=' + encodeURIComponent('123 Nguyễn Văn Linh, Hải Châu, Đà Nẵng') + '&z=15&output=embed';
+        $('mapBtn').innerHTML = open ? '<i class="fa-solid fa-xmark mr-1"></i>Ẩn bản đồ' : '<i class="fa-solid fa-map mr-1"></i>Xem bản đồ';
+    }
+
+    /* ---- Opening hours + live status (Vietnam time) ---- */
+    const HOURS = { open: 8.5, close: 21 };
+    const DAYS = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    function vnNow() { return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' })); }
+    function renderHours() {
+        const now = vnNow(), today = now.getDay(), h = now.getHours() + now.getMinutes() / 60;
+        const isOpen = h >= HOURS.open && h < HOURS.close;
+        const st = $('openStatus');
+        st.innerHTML = isOpen ? '<i class="fa-solid fa-circle text-[8px] mr-1.5 text-emerald-500"></i>Đang mở cửa · đóng lúc 21:00' : '<i class="fa-solid fa-circle text-[8px] mr-1.5 text-red-500"></i>Đã đóng cửa · mở lại 8:30';
+        st.className = 'text-xs font-bold px-3 py-1.5 rounded-full border ' + (isOpen ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200');
+        $('hoursList').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d => `<li class="flex justify-between px-2 py-1 rounded-md ${d === today ? 'bg-orange-50 text-orange-700 font-bold' : 'text-slate-500'}"><span>${DAYS[d]}${d === today ? ' (hôm nay)' : ''}</span><span>8:30 - 21:00</span></li>`).join('');
+    }
+    renderHours(); setInterval(renderHours, 60000);
+</script>
+</body>
+</html>

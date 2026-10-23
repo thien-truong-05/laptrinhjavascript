@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài Khoản Của Tôi - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <nav class="text-xs text-slate-400 mb-4"><a href="index.html" class="hover:text-orange-500">Trang chủ</a> / <span class="text-slate-600">Tài khoản</span></nav>
+    <div class="grid md:grid-cols-4 gap-6">
+        <aside class="md:col-span-1 bg-white rounded-2xl border border-slate-200 p-4 h-fit">
+            <div class="flex items-center gap-3 pb-4 mb-3 border-b border-slate-100">
+                <div id="avatar" class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg uppercase"></div>
+                <div class="min-w-0"><p id="sideName" class="font-bold text-sm truncate"></p><p id="sideEmail" class="text-xs text-slate-500 truncate"></p></div>
+            </div>
+            <nav class="space-y-1 text-sm">
+                <button data-tab="profile" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg font-semibold"><i class="fa-regular fa-user w-5"></i> Hồ sơ</button>
+                <button data-tab="orders" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg font-semibold"><i class="fa-solid fa-receipt w-5"></i> Đơn hàng</button>
+                <button data-tab="password" class="tab-btn w-full text-left px-3 py-2.5 rounded-lg font-semibold"><i class="fa-solid fa-lock w-5"></i> Đổi mật khẩu</button>
+                <button onclick="logout()" class="w-full text-left px-3 py-2.5 rounded-lg font-semibold text-red-500 hover:bg-red-50"><i class="fa-solid fa-right-from-bracket w-5"></i> Đăng xuất</button>
+            </nav>
+        </aside>
+
+        <section class="md:col-span-3">
+            <div id="tab-profile" class="tab hidden bg-white rounded-2xl border border-slate-200 p-6">
+                <h2 class="text-lg font-extrabold mb-4">Thông tin cá nhân</h2>
+                <form id="profileForm" class="space-y-4 max-w-md">
+                    <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Họ &amp; tên</label><input id="pName" required class="field"></div>
+                    <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email</label><input id="pEmail" disabled class="field bg-slate-100 text-slate-500"></div>
+                    <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Số điện thoại</label><input id="pPhone" type="tel" class="field" placeholder="0901234567"></div>
+                    <button class="btn-primary px-6 py-2.5 text-sm">Lưu thay đổi</button>
+                </form>
+            </div>
+
+            <div id="tab-orders" class="tab hidden space-y-4">
+                <h2 class="text-lg font-extrabold">Đơn hàng của tôi</h2>
+                <div id="orderList" class="space-y-4"></div>
+            </div>
+
+            <div id="tab-password" class="tab hidden bg-white rounded-2xl border border-slate-200 p-6">
+                <h2 class="text-lg font-extrabold mb-4">Đổi mật khẩu</h2>
+                <form id="pwForm" class="space-y-4 max-w-md">
+                    <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mật khẩu hiện tại</label><input type="password" id="oldPw" required class="field"></div>
+                    <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mật khẩu mới</label><input type="password" id="newPw" required minlength="6" class="field" placeholder="Tối thiểu 6 ký tự"></div>
+                    <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nhập lại mật khẩu mới</label><input type="password" id="newPw2" required class="field"></div>
+                    <button class="btn-dark px-6 py-2.5 text-sm">Cập nhật mật khẩu</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    if (requireLogin()) {
+        document.getElementById('avatar').innerText = currentUser.name.charAt(0);
+        document.getElementById('sideName').innerText = currentUser.name;
+        document.getElementById('sideEmail').innerText = currentUser.email;
+        document.getElementById('pName').value = currentUser.name;
+        document.getElementById('pEmail').value = currentUser.email;
+        document.getElementById('pPhone').value = currentUser.phone || '';
+
+        function showTab(t) {
+            if (!['profile', 'orders', 'password'].includes(t)) t = 'profile';
+            document.querySelectorAll('.tab').forEach(x => x.classList.add('hidden'));
+            document.getElementById('tab-' + t).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                const on = b.dataset.tab === t;
+                b.classList.toggle('bg-orange-50', on); b.classList.toggle('text-orange-600', on);
+                b.classList.toggle('text-slate-600', !on); b.classList.toggle('hover:bg-slate-50', !on);
+            });
+            if (t === 'orders') renderOrders();
+            history.replaceState(null, '', '#' + t);
+        }
+        document.querySelectorAll('.tab-btn').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+
+        function myOrders() { return orders.filter(o => o.userEmail === currentUser.email); }
+        function renderOrders() {
+            const list = myOrders();
+            const box = document.getElementById('orderList');
+            if (!list.length) {
+                box.innerHTML = `<div class="bg-white rounded-2xl border border-dashed border-slate-300 py-14 text-center"><p class="font-bold">Bạn chưa có đơn hàng nào</p><a href="products.html" class="btn-primary inline-block px-6 py-3 mt-4 text-sm">Mua sắm ngay</a></div>`;
+                return;
+            }
+            box.innerHTML = list.map(o => `
+                <div class="bg-white rounded-2xl border border-slate-200 p-5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                        <div><p class="font-extrabold text-orange-600">${esc(o.id)}</p><p class="text-xs text-slate-500">Ngày đặt: ${esc(o.date)} · ${o.payment === 'BANK' ? 'Chuyển khoản' : 'COD'}</p></div>
+                        <span class="px-2.5 py-1 rounded-md text-[11px] font-bold ${STATUS_CLASS[o.status] || ''}">${STATUS_LABEL[o.status] || esc(o.status)}</span>
+                    </div>
+                    <div class="py-3 space-y-2">
+                        ${(o.items || []).map(i => `<div class="flex items-center gap-3"><img src="${esc(i.image || '')}" onerror="this.onerror=null;this.src=FALLBACK_IMG" class="w-12 h-12 rounded-lg object-cover bg-slate-100"><div class="flex-1 min-w-0"><p class="text-sm font-semibold truncate">${esc(i.name)}</p><p class="text-xs text-slate-500">Size ${esc(i.size)} · ${esc(i.color)} · x${i.qty}</p></div><span class="text-sm font-bold">${formatVND(i.price * i.qty)}</span></div>`).join('') || '<p class="text-xs text-slate-400">Không có chi tiết sản phẩm.</p>'}
+                    </div>
+                    <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-orange-500 mr-1"></i>${esc(o.address || '')}</p>
+                    <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+                        <p class="text-sm">Tổng: <b class="text-orange-600 text-base">${formatVND(o.total)}</b></p>
+                        ${o.status === 'PENDING' ? `<button onclick="cancelOrder('${esc(o.id)}')" class="text-xs font-bold text-red-500 border border-red-200 hover:bg-red-50 px-3 py-1.5 rounded-lg">Hủy đơn</button>` : ''}
+                    </div>
+                </div>`).join('');
+        }
+        function cancelOrder(id) {
+            const o = orders.find(x => x.id === id && x.userEmail === currentUser.email);
+            if (!o || o.status !== 'PENDING' || !confirm('Bạn chắc chắn muốn hủy đơn ' + id + '?')) return;
+            o.status = 'CANCELLED'; saveState(); renderOrders(); showToast('Đã hủy đơn hàng ' + id);
+        }
+
+        document.getElementById('profileForm').onsubmit = e => {
+            e.preventDefault();
+            const phone = document.getElementById('pPhone').value.trim();
+            if (phone && !/^0\d{9}$/.test(phone)) { showToast('SĐT không hợp lệ (10 số)', 'err'); return; }
+            currentUser.name = document.getElementById('pName').value.trim() || currentUser.name;
+            currentUser.phone = phone; saveState(); renderHeader();
+            document.getElementById('sideName').innerText = currentUser.name; document.getElementById('avatar').innerText = currentUser.name.charAt(0);
+            showToast('Đã cập nhật hồ sơ!');
+        };
+        document.getElementById('pwForm').onsubmit = e => {
+            e.preventDefault();
+            if (document.getElementById('oldPw').value !== currentUser.password) { showToast('Mật khẩu hiện tại không đúng', 'err'); return; }
+            const n = document.getElementById('newPw').value;
+            if (n.length < 6) { showToast('Mật khẩu mới tối thiểu 6 ký tự', 'err'); return; }
+            if (n !== document.getElementById('newPw2').value) { showToast('Mật khẩu nhập lại không khớp', 'err'); return; }
+            currentUser.password = n; saveState(); e.target.reset(); showToast('Đã đổi mật khẩu!');
+        };
+        showTab(location.hash.replace('#', ''));
+    }
+</script>
+</body>
+</html>

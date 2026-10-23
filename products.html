@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <nav class="text-xs text-slate-400 mb-4"><a href="index.html" class="hover:text-orange-500">Trang chủ</a> / <span class="text-slate-600">Sản phẩm</span></nav>
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 pb-4 border-b border-slate-200">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Danh Sách Sản Phẩm</h1>
+            <p class="text-slate-500 text-sm mt-1">Tìm thấy <span id="productCount" class="font-bold text-orange-600">0</span> giày thể thao phù hợp</p>
+        </div>
+        <div class="flex items-center gap-2 self-end md:self-auto">
+            <button onclick="document.getElementById('filterPanel').classList.toggle('hidden')" class="lg:hidden bg-white border border-slate-300 text-sm rounded-lg px-3 py-2"><i class="fa-solid fa-filter mr-1 text-orange-500"></i>Lọc</button>
+            <label for="sortBy" class="text-sm font-medium text-slate-600 whitespace-nowrap"><i class="fa-solid fa-sort text-slate-400 mr-1"></i>Sắp xếp:</label>
+            <select id="sortBy" onchange="applyFilters()" class="bg-white border border-slate-300 text-slate-700 text-sm rounded-lg px-3 py-2 outline-none shadow-sm">
+                <option value="featured">Nổi bật nhất</option>
+                <option value="newest">Mới nhất</option>
+                <option value="discount">Giảm giá nhiều nhất</option>
+                <option value="rating">Đánh giá cao</option>
+                <option value="price-asc">Giá: Thấp đến Cao</option>
+                <option value="price-desc">Giá: Cao đến Thấp</option>
+                <option value="name-asc">Tên: A - Z</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <aside id="filterPanel" class="hidden lg:block lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 h-fit lg:sticky lg:top-24">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2"><i class="fa-solid fa-filter text-orange-500"></i> Bộ Lọc</h3>
+                <button onclick="resetFilters()" class="text-xs text-orange-600 font-semibold hover:underline">Đặt lại</button>
+            </div>
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Từ khóa</label>
+                <input type="text" id="filterKeyword" oninput="applyFilters()" placeholder="Nhập tên giày..." class="field !rounded-lg !py-2">
+            </div>
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Thương Hiệu</label>
+                <div id="brandFilters" class="space-y-2"></div>
+            </div>
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Kích Cỡ (EU)</label>
+                <div class="grid grid-cols-4 gap-2" id="sizeFilterContainer"></div>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">Giá Tối Đa</label>
+                    <span id="priceRangeValue" class="text-xs font-bold text-orange-600"></span>
+                </div>
+                <input type="range" id="priceRange" min="1000000" max="6000000" step="200000" value="6000000" oninput="applyFilters()" class="w-full accent-orange-500 cursor-pointer">
+                <div class="flex justify-between text-[10px] text-slate-400 mt-1"><span>1.000.000đ</span><span>6.000.000đ</span></div>
+            </div>
+        </aside>
+
+        <div class="lg:col-span-3">
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="moreWrap" class="text-center mt-8 hidden"><button onclick="showMore()" class="btn-dark px-6 py-3 text-sm">Xem thêm sản phẩm</button></div>
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 text-center p-6">
+                <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center text-2xl mb-3"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <h3 class="text-lg font-bold">Không tìm thấy sản phẩm phù hợp</h3>
+                <p class="text-slate-500 text-sm mt-1 max-w-sm">Thử thay đổi từ khóa hoặc bỏ bớt bộ lọc để xem nhiều sản phẩm hơn.</p>
+                <button onclick="resetFilters()" class="btn-dark mt-4 px-4 py-2 text-sm">Bỏ lọc</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    const PAGE_SIZE = 9;
+    let shown = PAGE_SIZE, filtered = [], sizeFilter = null;
+
+    function buildFilters() {
+        const brands = [...new Set(products.map(p => p.brand))];
+        document.getElementById('brandFilters').innerHTML = brands.map(b => `
+            <label class="flex items-center gap-2.5 text-sm text-slate-700 cursor-pointer">
+                <input type="checkbox" value="${esc(b)}" class="brand-checkbox rounded text-orange-500 w-4 h-4 border-slate-300" onchange="applyFilters()"><span>${esc(b)}</span>
+            </label>`).join('');
+        const sizes = [...new Set(products.flatMap(p => p.sizes))].sort((a, b) => a - b);
+        document.getElementById('sizeFilterContainer').innerHTML = sizes.map(s =>
+            `<button data-size="${s}" onclick="toggleSize(${s})" class="size-btn border border-slate-200 text-slate-700 hover:border-orange-500 rounded-lg py-1 text-xs font-semibold transition">${s}</button>`).join('');
+    }
+    function toggleSize(s) {
+        sizeFilter = sizeFilter === s ? null : s;
+        document.querySelectorAll('.size-btn').forEach(b => {
+            const on = Number(b.dataset.size) === sizeFilter;
+            b.classList.toggle('bg-orange-500', on); b.classList.toggle('text-white', on); b.classList.toggle('border-orange-500', on);
+        });
+        applyFilters();
+    }
+    function applyFilters() {
+        const kw = document.getElementById('filterKeyword').value.trim().toLowerCase();
+        const brands = [...document.querySelectorAll('.brand-checkbox:checked')].map(c => c.value);
+        const max = Number(document.getElementById('priceRange').value);
+        const sort = document.getElementById('sortBy').value;
+        document.getElementById('priceRangeValue').innerText = formatVND(max);
+        filtered = products.filter(p =>
+            (!kw || p.name.toLowerCase().includes(kw) || p.brand.toLowerCase().includes(kw)) &&
+            (!brands.length || brands.includes(p.brand)) &&
+            (!sizeFilter || p.sizes.includes(sizeFilter)) && p.price <= max);
+        const sorters = {
+            'price-asc': (a, b) => a.price - b.price, 'price-desc': (a, b) => b.price - a.price,
+            'name-asc': (a, b) => a.name.localeCompare(b.name), 'newest': (a, b) => b.id - a.id,
+            'discount': (a, b) => discountPct(b) - discountPct(a), 'rating': (a, b) => b.rating - a.rating
+        };
+        if (sorters[sort]) filtered.sort(sorters[sort]);
+        shown = PAGE_SIZE; render();
+    }
+    function render() {
+        document.getElementById('productCount').innerText = filtered.length;
+        document.getElementById('productGrid').innerHTML = filtered.slice(0, shown).map(productCard).join('');
+        const empty = document.getElementById('emptyState');
+        empty.classList.toggle('hidden', filtered.length > 0); empty.classList.toggle('flex', filtered.length === 0);
+        document.getElementById('moreWrap').classList.toggle('hidden', filtered.length <= shown);
+    }
+    function showMore() { shown += PAGE_SIZE; render(); }
+    function resetFilters() {
+        document.getElementById('filterKeyword').value = '';
+        document.querySelectorAll('.brand-checkbox').forEach(c => c.checked = false);
+        document.getElementById('priceRange').value = 6000000;
+        document.getElementById('sortBy').value = 'featured';
+        sizeFilter = null; document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('bg-orange-500', 'text-white', 'border-orange-500'));
+        applyFilters();
+    }
+    buildFilters();
+    const q = qs('q'), brand = qs('brand'), sort = qs('sort');
+    if (q) document.getElementById('filterKeyword').value = q;
+    if (brand) document.querySelectorAll('.brand-checkbox').forEach(c => { if (c.value === brand) c.checked = true; });
+    if (sort && [...document.getElementById('sortBy').options].some(o => o.value === sort)) document.getElementById('sortBy').value = sort;
+    applyFilters();
+</script>
+</body>
+</html>

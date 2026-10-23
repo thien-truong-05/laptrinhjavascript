@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow flex items-center justify-center px-4 py-12">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-xl border border-slate-100 fade-in">
+        <div class="text-center mb-6">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white flex items-center justify-center text-xl shadow-lg shadow-orange-500/30 mb-3"><i class="fa-solid fa-user-plus"></i></div>
+            <h1 class="text-2xl font-extrabold">Tạo Tài Khoản</h1>
+            <p class="text-xs text-slate-500 mt-1">Đăng ký để đặt hàng và theo dõi đơn dễ dàng</p>
+        </div>
+        <p id="needNotice" class="hidden mb-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-3 text-xs font-medium"><i class="fa-solid fa-circle-info mr-1"></i>Vui lòng đăng ký (hoặc đăng nhập nếu đã có tài khoản) để tiếp tục đặt hàng. Giỏ hàng của bạn vẫn được giữ nguyên.</p>
+        <form id="regForm" class="space-y-4" novalidate>
+            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Họ &amp; Tên</label><input id="regName" class="field" placeholder="Nguyễn Văn A"><p class="err hidden text-[11px] text-red-500 mt-1" data-for="regName">Vui lòng nhập họ tên</p></div>
+            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email</label><input type="email" id="regEmail" class="field" placeholder="nguyenvana@gmail.com"><p class="err hidden text-[11px] text-red-500 mt-1" data-for="regEmail">Email không hợp lệ hoặc đã tồn tại</p></div>
+            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mật khẩu</label><input type="password" id="regPassword" class="field" placeholder="Tối thiểu 6 ký tự"><p class="err hidden text-[11px] text-red-500 mt-1" data-for="regPassword">Mật khẩu tối thiểu 6 ký tự</p></div>
+            <div><label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nhập lại mật khẩu</label><input type="password" id="regPassword2" class="field" placeholder="••••••••"><p class="err hidden text-[11px] text-red-500 mt-1" data-for="regPassword2">Mật khẩu nhập lại không khớp</p></div>
+            <button type="submit" class="btn-primary w-full py-3 text-sm shadow-md">TẠO TÀI KHOẢN MỚI</button>
+        </form>
+        <p class="text-center text-xs text-slate-500 mt-5">Đã có tài khoản? <a id="toLogin" href="login.html" class="font-bold text-orange-600 hover:underline">Đăng nhập</a></p>
+    </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    const redirect = safeRedirect(qs('redirect'));
+    if (currentUser) location.replace(redirect);
+    const needOrder = qs('need') === 'order';
+    if (needOrder) document.getElementById('needNotice').classList.remove('hidden');
+    document.getElementById('toLogin').href = 'login.html?redirect=' + encodeURIComponent(redirect) + (needOrder ? '&need=order' : '');
+    document.getElementById('regForm').onsubmit = e => {
+        e.preventDefault();
+        const v = id => document.getElementById(id).value.trim();
+        const rules = {
+            regName: () => v('regName').length >= 2,
+            regEmail: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('regEmail')) && !users.some(u => u.email.toLowerCase() === v('regEmail').toLowerCase()),
+            regPassword: () => document.getElementById('regPassword').value.length >= 6,
+            regPassword2: () => document.getElementById('regPassword2').value === document.getElementById('regPassword').value
+        };
+        let ok = true;
+        Object.entries(rules).forEach(([id, fn]) => {
+            const valid = fn();
+            document.querySelector(`.err[data-for="${id}"]`).classList.toggle('hidden', valid);
+            if (!valid) ok = false;
+        });
+        if (!ok) return;
+        const u = { id: Date.now(), name: v('regName'), email: v('regEmail'), password: document.getElementById('regPassword').value, role: 'user', phone: '', createdAt: new Date().toISOString().split('T')[0] };
+        users.push(u); currentUser = u; saveState();
+        location.href = redirect;
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - ProSneaker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }</script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <nav class="text-xs text-slate-400 mb-4"><a href="index.html" class="hover:text-orange-500">Trang chủ</a> / <a href="cart.html" class="hover:text-orange-500">Giỏ hàng</a> / <span class="text-slate-600">Thanh toán</span></nav>
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-6"><i class="fa-solid fa-file-invoice text-orange-500 mr-2"></i>Thông Tin Đặt Hàng</h1>
+
+    <form id="checkoutForm" class="grid lg:grid-cols-3 gap-6" style="display:none" novalidate>
+        <div class="lg:col-span-2 space-y-5">
+            <section class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
+                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">1. Thông tin người nhận</h2>
+                <div><label class="block text-xs font-medium mb-1">Họ và tên *</label><input id="custName" class="field" placeholder="Nguyễn Văn A"><p class="err text-[11px] text-red-500 mt-1 hidden" data-for="custName">Vui lòng nhập họ tên</p></div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-medium mb-1">Số điện thoại *</label><input id="custPhone" type="tel" class="field" placeholder="0901234567"><p class="err text-[11px] text-red-500 mt-1 hidden" data-for="custPhone">SĐT không hợp lệ (10 số, bắt đầu bằng 0)</p></div>
+                    <div><label class="block text-xs font-medium mb-1">Email *</label><input id="custEmail" type="email" class="field" placeholder="email@example.com"><p class="err text-[11px] text-red-500 mt-1 hidden" data-for="custEmail">Email không hợp lệ</p></div>
+                </div>
+            </section>
+
+            <section class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
+                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Địa chỉ giao hàng</h2>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-medium mb-1">Tỉnh / Thành phố *</label><select id="custCity" class="field"><option value="">Chọn Tỉnh/Thành</option></select><p class="err text-[11px] text-red-500 mt-1 hidden" data-for="custCity">Vui lòng chọn tỉnh/thành</p></div>
+                    <div><label class="block text-xs font-medium mb-1">Quận / Huyện *</label><select id="custDistrict" class="field"><option value="">Chọn Quận/Huyện</option></select><p class="err text-[11px] text-red-500 mt-1 hidden" data-for="custDistrict">Vui lòng chọn quận/huyện</p></div>
+                </div>
+                <div><label class="block text-xs font-medium mb-1">Địa chỉ chi tiết (số nhà, đường) *</label><input id="custAddress" class="field" placeholder="VD: 123 Đường Nguyễn Trãi, Phường 2"><p class="err text-[11px] text-red-500 mt-1 hidden" data-for="custAddress">Vui lòng nhập địa chỉ chi tiết</p></div>
+                <div><label class="block text-xs font-medium mb-1">Ghi chú (tuỳ chọn)</label><textarea id="custNote" rows="2" class="field" placeholder="Giao giờ hành chính, gọi trước khi giao..."></textarea></div>
+            </section>
+
+            <section class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
+                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">3. Vận chuyển &amp; thanh toán</h2>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <label class="border border-slate-200 rounded-xl p-3 flex items-center gap-3 cursor-pointer has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50/50">
+                        <input type="radio" name="shipping" value="30000" checked class="accent-orange-500"><div><p class="text-sm font-bold">Nhanh (30.000đ)</p><p class="text-[11px] text-slate-500">2-3 ngày làm việc</p></div></label>
+                    <label class="border border-slate-200 rounded-xl p-3 flex items-center gap-3 cursor-pointer has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50/50">
+                        <input type="radio" name="shipping" value="15000" class="accent-orange-500"><div><p class="text-sm font-bold">Tiết kiệm (15.000đ)</p><p class="text-[11px] text-slate-500">4-6 ngày làm việc</p></div></label>
+                </div>
+                <div class="space-y-2">
+                    <label class="border border-slate-200 rounded-xl p-3 flex items-center gap-3 cursor-pointer has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50/50">
+                        <input type="radio" name="payment" value="COD" checked class="accent-orange-500"><i class="fa-solid fa-hand-holding-dollar text-slate-600"></i><span class="text-sm font-semibold">Thanh toán khi nhận hàng (COD)</span></label>
+                    <label class="border border-slate-200 rounded-xl p-3 flex items-center gap-3 cursor-pointer has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50/50">
+                        <input type="radio" name="payment" value="BANK" class="accent-orange-500"><i class="fa-solid fa-qrcode text-slate-600"></i><span class="text-sm font-semibold">Chuyển khoản ngân hàng (QR)</span></label>
+                </div>
+            </section>
+        </div>
+
+        <aside class="bg-white rounded-2xl border border-slate-200 p-5 h-fit space-y-4 lg:sticky lg:top-24">
+            <h2 class="font-extrabold">Đơn hàng của bạn</h2>
+            <div id="summaryItems" class="space-y-3 max-h-64 overflow-y-auto pr-1"></div>
+            <div class="space-y-2 text-sm pt-3 border-t border-slate-100">
+                <div class="flex justify-between text-slate-500"><span>Tạm tính</span><span id="sSub" class="font-semibold text-slate-800"></span></div>
+                <div id="sDiscRow" class="flex justify-between text-emerald-600 hidden"><span>Giảm giá</span><span id="sDisc" class="font-bold"></span></div>
+                <div class="flex justify-between text-slate-500"><span>Phí vận chuyển</span><span id="sShip" class="font-semibold text-slate-800"></span></div>
+                <div class="flex justify-between text-base font-extrabold pt-3 border-t border-slate-100"><span>Tổng thanh toán</span><span id="sTotal" class="text-orange-600 text-lg"></span></div>
+            </div>
+            <button type="submit" class="btn-primary w-full py-3.5 shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 text-sm"><i class="fa-solid fa-check-circle"></i> XÁC NHẬN ĐẶT HÀNG</button>
+            <a href="cart.html" class="block text-center text-xs text-slate-500 hover:text-orange-600">← Quay lại giỏ hàng</a>
+        </aside>
+    </form>
+</main>
+
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+    if (requireLogin()) {
+        if (cart.length === 0) location.replace('cart.html');
+        else document.getElementById('checkoutForm').style.display = '';
+
+        const citySel = document.getElementById('custCity'), distSel = document.getElementById('custDistrict');
+        Object.keys(DISTRICTS_MAP).forEach(c => citySel.insertAdjacentHTML('beforeend', `<option value="${esc(c)}">${esc(c)}</option>`));
+        citySel.onchange = () => {
+            distSel.innerHTML = '<option value="">Chọn Quận/Huyện</option>' + (DISTRICTS_MAP[citySel.value] || []).map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+        };
+        document.getElementById('custName').value = currentUser.name || '';
+        document.getElementById('custEmail').value = currentUser.email || '';
+        document.getElementById('custPhone').value = currentUser.phone || '';
+
+        const shipFee = () => Number(document.querySelector('input[name="shipping"]:checked').value);
+        function renderSummary() {
+            document.getElementById('summaryItems').innerHTML = cart.map(i => `
+                <div class="flex items-center gap-3"><img src="${esc(i.image)}" onerror="this.onerror=null;this.src=FALLBACK_IMG" class="w-12 h-12 rounded-lg object-cover bg-slate-100">
+                <div class="flex-1 min-w-0"><p class="text-xs font-bold truncate">${esc(i.name)}</p><p class="text-[11px] text-slate-500">Size ${esc(i.size)} · ${esc(i.color)} · x${i.qty}</p></div>
+                <span class="text-xs font-bold">${formatVND(i.price * i.qty)}</span></div>`).join('');
+            const sub = cartSubtotal(), disc = cartDiscount(), ship = shipFee();
+            document.getElementById('sSub').innerText = formatVND(sub);
+            document.getElementById('sDiscRow').classList.toggle('hidden', !disc);
+            document.getElementById('sDisc').innerText = '-' + formatVND(disc);
+            document.getElementById('sShip').innerText = formatVND(ship);
+            document.getElementById('sTotal').innerText = formatVND(sub - disc + ship);
+        }
+        document.querySelectorAll('input[name="shipping"]').forEach(r => r.onchange = renderSummary);
+        renderSummary();
+
+        const rules = {
+            custName: v => v.trim().length >= 2,
+            custPhone: v => /^0\d{9}$/.test(v.trim()),
+            custEmail: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+            custCity: v => !!v, custDistrict: v => !!v,
+            custAddress: v => v.trim().length >= 5
+        };
+        document.getElementById('checkoutForm').onsubmit = e => {
+            e.preventDefault();
+            if (!currentUser || !users.some(u => u.id === currentUser.id)) { showToast('Vui lòng đăng nhập để đặt hàng!', 'err'); requireLogin(); return; }
+            if (cart.length === 0) { location.href = 'cart.html'; return; }
+            let ok = true;
+            Object.entries(rules).forEach(([id, fn]) => {
+                const valid = fn(document.getElementById(id).value);
+                document.querySelector(`.err[data-for="${id}"]`).classList.toggle('hidden', valid);
+                document.getElementById(id).classList.toggle('!border-red-400', !valid);
+                if (!valid) ok = false;
+            });
+            if (!ok) { showToast('Vui lòng kiểm tra lại thông tin!', 'err'); return; }
+
+            const sub = cartSubtotal(), disc = cartDiscount(), ship = shipFee();
+            const order = {
+                id: '#PS-' + Math.floor(100000 + Math.random() * 900000),
+                userEmail: currentUser.email,
+                customerName: document.getElementById('custName').value.trim(),
+                phone: document.getElementById('custPhone').value.trim(),
+                email: document.getElementById('custEmail').value.trim(),
+                address: `${document.getElementById('custAddress').value.trim()}, ${distSel.value}, ${citySel.value}`,
+                note: document.getElementById('custNote').value.trim(),
+                date: new Date().toISOString().split('T')[0],
+                subtotal: sub, discount: disc, shipping: ship, coupon: discountCode,
+                total: sub - disc + ship,
+                payment: document.querySelector('input[name="payment"]:checked').value,
+                status: 'PENDING',
+                items: cart.map(({ name, price, size, color, qty, image, id }) => ({ id, name, price, size, color, qty, image }))
+            };
+            if (!currentUser.phone) currentUser.phone = order.phone;
+            orders.unshift(order);
+            cart = []; discountCode = null;
+            saveState();
+            location.href = 'order-success.html?id=' + encodeURIComponent(order.id);
+        };
+    }
+</script>
+</body>
+</html>
